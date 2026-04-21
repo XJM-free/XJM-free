@@ -1,15 +1,33 @@
-### Hi 👋
+# Hi, I'm Jie 👋
 
-Independent iOS / Mac developer shipping in public.
+Indie iOS & Mac developer. **18 months solo. 32 apps shipped. ~50 Apple Review rejections survived.**
 
----
-
-### 🛠 Open Source
-
-- **[apple-presubmit-audit](https://github.com/XJM-free/apple-presubmit-audit)** — 40+ App Store Review checks before you hit Submit. Built from real rejection patterns. MIT.
+Now turning the lessons into tools other indie devs can use.
 
 ---
 
-### 📬 Contact
+## 🚀 What I'm Building
 
-- Email: **jie.xiang.jm@gmail.com**
+### [ShipReady](https://prereviews.app)
+
+Mac app — pre-flight checks for indie iOS/Mac devs to catch what Apple Review would reject, **before you submit**.
+
+→ Built from the patterns of ~50 real rejections across my own portfolio.
+
+### [frexx.top](https://frexx.top)
+
+My App Store portfolio. 32 published apps, all solo.
+
+---
+
+## 📊 GitHub
+
+![Stats](https://github-readme-stats.vercel.app/api?username=XJM-free&show_icons=true&theme=tokyonight&hide_border=true&include_all_commits=true)
+
+---
+
+## 📡 Find Me
+
+- 🌐 [prereviews.app](https://prereviews.app) — ShipReady & writing
+- 🦋 [@prereviews.app](https://bsky.app/profile/prereviews.app) on Bluesky
+- 📧 jie.xiang.jm@gmail.com
