@@ -35,5 +35,5 @@ My App Store portfolio. 32 published apps, all solo.
 ## 📡 Find Me
 
 - 🌐 [prereviews.app](https://prereviews.app) — ShipReady & writing
-- 🦋 [@prereviews.app](https://bsky.app/profile/prereviews.app) on Bluesky
+- 🦋 [@jiexiang.dev](https://bsky.app/profile/jiexiang.dev) on Bluesky
 - 📧 jie.xiang.jm@gmail.com
