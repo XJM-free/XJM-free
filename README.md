@@ -10,7 +10,7 @@
 
 #### What I'm doing now
 
-- Running a one-person iOS app factory — **32 shipped, 1 Mac app**, all under the XJM-free org
+- Running a one-person iOS app factory — **53 iOS apps + 1 Mac devtool live**, all under the XJM-free org (Apple Team `F766GKBTRF`)
 - Open-sourcing the tooling that made it possible — `apple-presubmit-audit` (70+ App Store checks) and `claude-agent-ledger` (Claude Code cost attribution)
 - Writing about reliability × AI agents at **[jiexiang.dev/blog](https://jiexiang.dev/blog)**
 
@@ -20,7 +20,7 @@
 |---|---|
 | [`apple-presubmit-audit`](https://github.com/XJM-free/apple-presubmit-audit) | 70+ static checks codifying ~50 real App Store rejections. Used internally before every submission. |
 | [`claude-agent-ledger`](https://github.com/XJM-free/claude-agent-ledger) | Per-subagent cost attribution for Claude Code (npm). |
-| [`iOS-apps-portfolio`](https://github.com/XJM-free/iOS-apps-portfolio) | Curated catalog of all 32 shipped apps with App Store links. |
+| [`iOS-apps-portfolio`](https://github.com/XJM-free/iOS-apps-portfolio) | Curated catalog of all 53 shipped iOS apps + 1 Mac devtool with App Store links. |
 
 #### Talk to me
 
