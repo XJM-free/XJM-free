@@ -1,6 +1,6 @@
 ### Hi, I'm Jie Xiang 👋
 
-**Reliability engineer who ships.** 32 iOS apps and a Mac devtool in 18 months — built with the same operational discipline that kept a commercial KVM cloud platform running.
+**Reliability engineer who ships.** 53 iOS apps and a Mac devtool in 18 months — built with the same operational discipline that kept a commercial KVM cloud platform running.
 
 📍 Shanghai · GMT+8 · open to overseas remote (US/EU async-friendly)
 
