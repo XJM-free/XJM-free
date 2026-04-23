@@ -2,7 +2,7 @@
 
 **Reliability engineer who ships.** 53 iOS apps and a Mac devtool in 18 months — built with the same operational discipline that kept a commercial KVM cloud platform running.
 
-📍 Shanghai · GMT+8 · open to overseas remote (US/EU async-friendly)
+📍 Shanghai · GMT+8 · indie + main job · open to bounded side projects
 
 → **[jiexiang.dev](https://jiexiang.dev)** is the hub.
 
@@ -28,4 +28,4 @@
 - 📧 Email — **jie.xiang.jm@gmail.com**
 - 🦋 Bluesky — **[@jiexiang.dev](https://bsky.app/profile/jiexiang.dev)**
 
-> Open to: senior iOS / platform / DX / reliability roles · async remote · contract or FT
+> Side work I take on: App Store rescue · Claude Code / agent pipelines · MCP server dev · indie iOS coaching. Async, scope-bounded. Default answer "probably no" — but interesting bounded problems flip the answer fast.
