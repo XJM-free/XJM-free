@@ -10,7 +10,7 @@
 
 #### What I'm doing now
 
-- Running a one-person iOS app factory — **53 iOS apps + 1 Mac devtool live**, all under the XJM-free org (Apple Team `F766GKBTRF`)
+- Running a one-person iOS app factory — **53 iOS apps + 1 Mac devtool live**, all under the XJM-free org
 - Open-sourcing the tooling that made it possible — `apple-presubmit-audit` (70+ App Store checks) and `claude-agent-ledger` (Claude Code cost attribution)
 - Writing about reliability × AI agents at **[jiexiang.dev/blog](https://jiexiang.dev/blog)**
 
