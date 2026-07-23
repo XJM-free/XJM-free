@@ -171,6 +171,10 @@ def audit_package(audit: Audit) -> None:
         package = request_json(
             "https://registry.npmjs.org/claude-agent-ledger/latest"
         )
+        source = request_json(
+            "https://raw.githubusercontent.com/"
+            "XJM-free/claude-agent-ledger/main/package.json"
+        )
     except (RuntimeError, ValueError) as error:
         audit.fail(f"npm package could not be verified ({type(error).__name__})")
         return
@@ -179,11 +183,19 @@ def audit_package(audit: Audit) -> None:
         not isinstance(package, dict)
         or package.get("name") != "claude-agent-ledger"
         or not package.get("version")
+        or not isinstance(source, dict)
+        or source.get("name") != "claude-agent-ledger"
+        or not source.get("version")
     ):
         audit.fail("npm returned unexpected claude-agent-ledger metadata")
+    elif package["version"] != source["version"]:
+        audit.fail(
+            "claude-agent-ledger source and npm releases differ "
+            f"(source {source['version']}, npm {package['version']})"
+        )
     else:
         audit.pass_(
-            "claude-agent-ledger is installable from npm "
+            "claude-agent-ledger is installable from npm and matches source "
             f"(version {package['version']})"
         )
 
