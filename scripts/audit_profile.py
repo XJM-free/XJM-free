@@ -20,9 +20,11 @@ GITHUB_REPOS = (
 )
 SURFACES = (
     ("https://tinyweblab.com", "Tiny Web Lab"),
-    ("https://jiexiang.dev", "<title>Jie Xiang"),
-    ("https://jiexiang.dev/blog", "Writing"),
-    ("https://bsky.app/profile/jiexiang.dev", "@jiexiang.dev on Bluesky"),
+)
+WITHHELD_SURFACES = (
+    "https://jiexiang.dev",
+    "https://x.com/FreJieMei",
+    "https://bsky.app/profile/jiexiang.dev",
 )
 
 
@@ -86,20 +88,16 @@ def audit_surfaces(audit: Audit) -> None:
             continue
         audit.pass_(f"{url} is reachable and identifies the intended surface")
 
-    oembed_url = "https://publish.twitter.com/oembed?" + urllib.parse.urlencode(
-        {"url": "https://x.com/FreJieMei"}
-    )
-    try:
-        payload = request_json(oembed_url)
-    except (RuntimeError, ValueError) as error:
-        audit.fail(f"X profile could not be verified ({type(error).__name__})")
+    profile = (ROOT / "README.md").read_text(encoding="utf-8")
+    leaked_endorsements = [
+        url for url in WITHHELD_SURFACES if url in profile
+    ]
+    if leaked_endorsements:
+        audit.fail(
+            "README reintroduced a surface that has not passed content review"
+        )
     else:
-        if not isinstance(payload, dict) or payload.get("url") != (
-            "https://x.com/FreJieMei"
-        ):
-            audit.fail("X oEmbed resolved to an unexpected profile")
-        else:
-            audit.pass_("X profile resolves through X's public oEmbed endpoint")
+        audit.pass_("unqualified personal and social surfaces remain withheld")
 
 
 def audit_github_repositories(audit: Audit) -> None:
