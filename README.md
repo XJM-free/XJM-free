@@ -1,31 +1,20 @@
-### Hi, I'm Jie Xiang 👋
+# Jie Xiang
 
-**Reliability engineer who ships.** 53 iOS apps and a Mac devtool in 18 months — built with the same operational discipline that kept a commercial KVM cloud platform running.
+Independent developer in Shanghai.
 
-📍 Shanghai · GMT+8 · indie + main job · open to bounded side projects
+I make small, useful things on the internet. I'm trying to make a living from my own products so I can work from anywhere and see the world.
 
-→ **[jiexiang.dev](https://jiexiang.dev)** is the hub.
+## Right now
 
----
+**[Tiny Web Lab](https://tinyweblab.com)** — one useful, strange, or playful website at a time.
 
-#### What I'm doing now
+## A few things I've made
 
-- Running a one-person iOS app factory — **53 iOS apps + 1 Mac devtool live**, all under the XJM-free org
-- Open-sourcing the tooling that made it possible — `apple-presubmit-audit` (70+ App Store checks) and `claude-agent-ledger` (Claude Code cost attribution)
-- Writing about reliability × AI agents at **[jiexiang.dev/blog](https://jiexiang.dev/blog)**
+- **[apple-presubmit-audit](https://github.com/XJM-free/apple-presubmit-audit)** — catches common App Store review problems before submission.
+- **[claude-agent-ledger](https://github.com/XJM-free/claude-agent-ledger)** — shows where Claude Code agent costs actually go.
+- **[App Store portfolio](https://github.com/XJM-free/iOS-apps-portfolio)** — a public record of 53 iOS apps and one Mac tool I shipped solo.
+- **[Writing](https://jiexiang.dev/blog)** — notes on reliability, AI agents, and building independently.
 
-#### Open-source
+## Elsewhere
 
-| Repo | What it does |
-|---|---|
-| [`apple-presubmit-audit`](https://github.com/XJM-free/apple-presubmit-audit) | 70+ static checks codifying ~50 real App Store rejections. Used internally before every submission. |
-| [`claude-agent-ledger`](https://github.com/XJM-free/claude-agent-ledger) | Per-subagent cost attribution for Claude Code (npm). |
-| [`iOS-apps-portfolio`](https://github.com/XJM-free/iOS-apps-portfolio) | Curated catalog of all 53 shipped iOS apps + 1 Mac devtool with App Store links. |
-
-#### Talk to me
-
-- 🌐 Web — **[jiexiang.dev](https://jiexiang.dev)**
-- 📧 Email — **jie.xiang.jm@gmail.com**
-- 🦋 Bluesky — **[@jiexiang.dev](https://bsky.app/profile/jiexiang.dev)**
-
-> Side work I take on: App Store rescue · Claude Code / agent pipelines · MCP server dev · indie iOS coaching. Async, scope-bounded. Default answer "probably no" — but interesting bounded problems flip the answer fast.
+[Website](https://jiexiang.dev) · [X](https://x.com/FreJieMei) · [Bluesky](https://bsky.app/profile/jiexiang.dev) · [Email](mailto:jie.xiang.jm@gmail.com)
