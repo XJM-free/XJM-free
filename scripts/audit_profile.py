@@ -16,7 +16,6 @@ USER_AGENT = "XJM-free-profile-audit/1.0"
 GITHUB_REPOS = (
     "apple-presubmit-audit",
     "claude-agent-ledger",
-    "iOS-apps-portfolio",
 )
 SURFACES = (
     ("https://tinyweblab.com", "Tiny Web Lab"),
@@ -25,6 +24,7 @@ WITHHELD_SURFACES = (
     "https://jiexiang.dev",
     "https://x.com/FreJieMei",
     "https://bsky.app/profile/jiexiang.dev",
+    "https://github.com/XJM-free/iOS-apps-portfolio",
 )
 
 
@@ -97,7 +97,7 @@ def audit_surfaces(audit: Audit) -> None:
             "README reintroduced a surface that has not passed content review"
         )
     else:
-        audit.pass_("unqualified personal and social surfaces remain withheld")
+        audit.pass_("unqualified or non-public surfaces remain withheld")
 
 
 def audit_github_repositories(audit: Audit) -> None:
@@ -144,26 +144,6 @@ def audit_github_repositories(audit: Audit) -> None:
             audit.fail(f"{name}: " + "; ".join(problems))
         else:
             audit.pass_(f"{name} is public, original, active, and described")
-
-    raw_portfolio = (
-        "https://raw.githubusercontent.com/"
-        "XJM-free/iOS-apps-portfolio/main/README.md"
-    )
-    try:
-        portfolio = request_text(raw_portfolio)
-    except RuntimeError as error:
-        audit.fail(f"portfolio evidence could not be read ({type(error).__name__})")
-    else:
-        required = (
-            "53 iOS apps shipped solo",
-            "Public verification",
-            "currently unavailable",
-        )
-        missing = [marker for marker in required if marker not in portfolio]
-        if missing:
-            audit.fail("portfolio evidence is missing reviewed availability claims")
-        else:
-            audit.pass_("portfolio distinguishes shipped work from public availability")
 
 
 def audit_package(audit: Audit) -> None:
