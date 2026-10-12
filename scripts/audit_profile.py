@@ -21,11 +21,9 @@ GITHUB_REPOS = (
 SURFACES = (
     ("https://tinyweblab.com", "未完待续"),
 )
-CONTACT = "mailto:jie.xiang.jm@gmail.com"
+PUBLIC_ALIAS = "Quiet Orbit"
+CONTACT = "https://github.com/XJM-free/XJM-free/issues"
 WITHHELD_SURFACES = (
-    "https://jiexiang.dev",
-    "https://x.com/FreJieMei",
-    "https://bsky.app/profile/jiexiang.dev",
     "https://github.com/XJM-free/iOS-apps-portfolio",
 )
 
@@ -127,6 +125,21 @@ def audit_profile_links(audit: Audit) -> None:
             audit.fail("README contains a link outside the reviewed recommendations")
     if len(audit.failures) == initial_failures:
         audit.pass_("all README links are reviewed recommendations or the contact address")
+
+
+def audit_profile_identity(audit: Audit) -> None:
+    profile = (ROOT / "README.md").read_text(encoding="utf-8")
+    lines = profile.splitlines()
+    if (
+        not lines
+        or lines[0] != f"# {PUBLIC_ALIAS}"
+        or "Independent developer." not in lines
+    ):
+        audit.fail("README must use the public alias and location-free introduction")
+    elif re.search(r"mailto:|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", profile):
+        audit.fail("README must not expose a personal email address")
+    else:
+        audit.pass_("README uses the public alias without a location or personal email")
 
 
 class PageTitle(HTMLParser):
@@ -342,6 +355,7 @@ def main() -> int:
     audit = Audit()
     audit_sensitive_material(audit)
     audit_profile_links(audit)
+    audit_profile_identity(audit)
     audit_surfaces(audit)
     audit_github_repositories(audit)
     audit_package(audit)
