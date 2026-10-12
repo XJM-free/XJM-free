@@ -2,11 +2,11 @@
 
 Independent developer in Shanghai.
 
-I make small, useful things on the internet. I'm trying to make a living from my own products so I can work from anywhere and see the world.
+I build small, useful products and open-source tools, from the idea to the working release.
 
 ## Right now
 
-**[Tiny Web Lab](https://tinyweblab.com)** — one useful, strange, or playful website at a time.
+**[未完待续 · 这一刻，还来得及](https://tinyweblab.com)** — an interactive accident investigation: find evidence, talk to characters, and explore how different choices change the outcome. In Chinese.
 
 ## A few things I've made
 
