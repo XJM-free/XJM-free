@@ -1,6 +1,6 @@
-# Jie Xiang
+# Quiet Orbit
 
-Independent developer in Shanghai.
+Independent developer.
 
 I build small, useful products and open-source tools, from the idea to the working release.
 
@@ -15,4 +15,4 @@ I build small, useful products and open-source tools, from the idea to the worki
 
 ## Contact
 
-[Email](mailto:jie.xiang.jm@gmail.com)
+For questions about a tool, open an issue in its repository.
