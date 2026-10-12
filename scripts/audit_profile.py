@@ -8,6 +8,7 @@ import re
 import subprocess
 import sys
 import urllib.parse
+from html.parser import HTMLParser
 from pathlib import Path
 
 
@@ -18,8 +19,9 @@ GITHUB_REPOS = (
     "claude-agent-ledger",
 )
 SURFACES = (
-    ("https://tinyweblab.com", "Tiny Web Lab"),
+    ("https://tinyweblab.com", "未完待续"),
 )
+CONTACT = "mailto:jie.xiang.jm@gmail.com"
 WITHHELD_SURFACES = (
     "https://jiexiang.dev",
     "https://x.com/FreJieMei",
@@ -41,6 +43,13 @@ class Audit:
 
 
 def request_bytes(url: str) -> bytes:
+    try:
+        return _request_bytes(url)
+    except (subprocess.TimeoutExpired, OSError) as error:
+        raise RuntimeError(f"request could not complete: {type(error).__name__}") from error
+
+
+def _request_bytes(url: str) -> bytes:
     result = subprocess.run(
         [
             "curl",
@@ -76,6 +85,69 @@ def request_json(url: str) -> object:
     return json.loads(request_bytes(url))
 
 
+def normalized_url(url: str) -> str:
+    """Canonicalize host casing and root slashes without hiding URL changes."""
+    parts = urllib.parse.urlsplit(url)
+    path = parts.path.rstrip("/")
+    if parts.netloc.lower() == "github.com":
+        path = urllib.parse.unquote(path).lower()
+    return urllib.parse.urlunsplit(
+        (parts.scheme.lower(), parts.netloc.lower(), path, parts.query, parts.fragment)
+    )
+
+
+def profile_links(profile: str) -> set[str]:
+    markdown = re.findall(r"\]\(\s*<?([^\s)>]+)", profile)
+    plain = re.findall(r"(?:https?://|mailto:)[^\s<>\"')\]]+", profile, re.I)
+    return set(markdown + plain)
+
+
+def audit_profile_links(audit: Audit) -> None:
+    profile = (ROOT / "README.md").read_text(encoding="utf-8")
+    approved = {
+        normalized_url(url)
+        for url in (
+            CONTACT,
+            *(url for url, _ in SURFACES),
+            *(f"https://github.com/XJM-free/{name}" for name in GITHUB_REPOS),
+        )
+    }
+    withheld = {normalized_url(url) for url in WITHHELD_SURFACES}
+    initial_failures = len(audit.failures)
+    for url in sorted(profile_links(profile)):
+        try:
+            normalized = normalized_url(url)
+        except ValueError:
+            audit.fail("README contains a malformed recommendation URL")
+            continue
+        if normalized in withheld:
+            audit.fail("README reintroduced a surface that has not passed content review")
+        elif normalized not in approved:
+            # Do not print arbitrary URL values, which may contain credentials.
+            audit.fail("README contains a link outside the reviewed recommendations")
+    if len(audit.failures) == initial_failures:
+        audit.pass_("all README links are reviewed recommendations or the contact address")
+
+
+class PageTitle(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.in_title = False
+        self.fragments: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "title":
+            self.in_title = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "title":
+            self.in_title = False
+
+    def handle_data(self, data: str) -> None:
+        if self.in_title:
+            self.fragments.append(data)
+
+
 def audit_surfaces(audit: Audit) -> None:
     for url, marker in SURFACES:
         try:
@@ -83,22 +155,12 @@ def audit_surfaces(audit: Audit) -> None:
         except (RuntimeError, ValueError) as error:
             audit.fail(f"{url} could not be verified ({type(error).__name__})")
             continue
-        if marker not in body:
-            audit.fail(f"{url} is reachable but its identity marker is missing")
+        title = PageTitle()
+        title.feed(body)
+        if marker not in "".join(title.fragments):
+            audit.fail(f"{url} is reachable but its reviewed page title is missing")
             continue
         audit.pass_(f"{url} is reachable and identifies the intended surface")
-
-    profile = (ROOT / "README.md").read_text(encoding="utf-8")
-    leaked_endorsements = [
-        url for url in WITHHELD_SURFACES if url in profile
-    ]
-    if leaked_endorsements:
-        audit.fail(
-            "README reintroduced a surface that has not passed content review"
-        )
-    else:
-        audit.pass_("unqualified or non-public surfaces remain withheld")
-
 
 def audit_github_repositories(audit: Audit) -> None:
     try:
@@ -151,10 +213,6 @@ def audit_package(audit: Audit) -> None:
         package = request_json(
             "https://registry.npmjs.org/claude-agent-ledger/latest"
         )
-        source = request_json(
-            "https://raw.githubusercontent.com/"
-            "XJM-free/claude-agent-ledger/main/package.json"
-        )
     except (RuntimeError, ValueError) as error:
         audit.fail(f"npm package could not be verified ({type(error).__name__})")
         return
@@ -163,20 +221,36 @@ def audit_package(audit: Audit) -> None:
         not isinstance(package, dict)
         or package.get("name") != "claude-agent-ledger"
         or not package.get("version")
-        or not isinstance(source, dict)
-        or source.get("name") != "claude-agent-ledger"
-        or not source.get("version")
     ):
         audit.fail("npm returned unexpected claude-agent-ledger metadata")
-    elif package["version"] != source["version"]:
-        audit.fail(
-            "claude-agent-ledger source and npm releases differ "
-            f"(source {source['version']}, npm {package['version']})"
+        return
+
+    version = package["version"]
+    if not isinstance(version, str) or not re.fullmatch(
+        r"\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?", version
+    ):
+        audit.fail("npm returned an invalid release version")
+        return
+    try:
+        source = request_json(
+            "https://raw.githubusercontent.com/"
+            f"XJM-free/claude-agent-ledger/v{version}/package.json"
         )
+    except (RuntimeError, ValueError) as error:
+        audit.fail(f"published release metadata could not be verified ({type(error).__name__})")
+        return
+    if (
+        not isinstance(source, dict)
+        or source.get("name") != "claude-agent-ledger"
+        or source.get("version") != version
+    ):
+        audit.fail("claude-agent-ledger npm metadata does not match its release tag")
+    elif not isinstance(package.get("dist"), dict) or not package["dist"].get("tarball"):
+        audit.fail("claude-agent-ledger npm metadata has no package archive")
     else:
         audit.pass_(
-            "claude-agent-ledger is installable from npm and matches source "
-            f"(version {package['version']})"
+            f"claude-agent-ledger npm metadata matches release tag v{version} "
+            "(installation not tested)"
         )
 
 
@@ -267,6 +341,7 @@ def audit_sensitive_material(audit: Audit) -> None:
 def main() -> int:
     audit = Audit()
     audit_sensitive_material(audit)
+    audit_profile_links(audit)
     audit_surfaces(audit)
     audit_github_repositories(audit)
     audit_package(audit)
