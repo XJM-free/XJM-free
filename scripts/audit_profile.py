@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-USER_AGENT = "XJM-free-profile-audit/1.0"
+USER_AGENT = "zemixo-profile-audit/1.0"
 GITHUB_REPOS = (
     "apple-presubmit-audit",
     "claude-agent-ledger",
@@ -21,10 +21,10 @@ GITHUB_REPOS = (
 SURFACES = (
     ("https://tinyweblab.com", "未完待续"),
 )
-PUBLIC_ALIAS = "Quiet Orbit"
-CONTACT = "https://github.com/XJM-free/XJM-free/issues"
+PUBLIC_ALIAS = "Zemixo"
+CONTACT = "https://github.com/zemixo/zemixo/issues"
 WITHHELD_SURFACES = (
-    "https://github.com/XJM-free/iOS-apps-portfolio",
+    "https://github.com/zemixo/iOS-apps-portfolio",
 )
 
 
@@ -107,7 +107,7 @@ def audit_profile_links(audit: Audit) -> None:
         for url in (
             CONTACT,
             *(url for url, _ in SURFACES),
-            *(f"https://github.com/XJM-free/{name}" for name in GITHUB_REPOS),
+            *(f"https://github.com/zemixo/{name}" for name in GITHUB_REPOS),
         )
     }
     withheld = {normalized_url(url) for url in WITHHELD_SURFACES}
@@ -178,7 +178,7 @@ def audit_surfaces(audit: Audit) -> None:
 def audit_github_repositories(audit: Audit) -> None:
     try:
         payload = request_json(
-            "https://api.github.com/users/XJM-free/repos?"
+            "https://api.github.com/users/zemixo/repos?"
             + urllib.parse.urlencode(
                 {"per_page": 100, "type": "owner", "sort": "updated"}
             )
@@ -247,7 +247,7 @@ def audit_package(audit: Audit) -> None:
     try:
         source = request_json(
             "https://raw.githubusercontent.com/"
-            f"XJM-free/claude-agent-ledger/v{version}/package.json"
+            f"zemixo/claude-agent-ledger/v{version}/package.json"
         )
     except (RuntimeError, ValueError) as error:
         audit.fail(f"published release metadata could not be verified ({type(error).__name__})")
