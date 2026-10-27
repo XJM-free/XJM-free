@@ -38,6 +38,35 @@ class ProfileAuditTests(unittest.TestCase):
         profile = (audit_profile.ROOT / "README.md").read_text(encoding="utf-8")
         self.assertEqual(self.links(profile), [])
 
+    def identity(self, contact):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "README.md").write_text(
+                "# Zemixo\nIndependent developer.\n" + contact, encoding="utf-8"
+            )
+            result = audit_profile.Audit()
+            with patch.object(audit_profile, "ROOT", root):
+                audit_profile.audit_profile_identity(result)
+            return result.failures
+
+    def test_explicit_public_contact_passes_both_gates(self):
+        contact = "[zemixo.git@gmail.com](mailto:zemixo.git@gmail.com)"
+        self.assertEqual(self.links(contact), [])
+        self.assertEqual(self.identity(contact), [])
+
+    def test_unapproved_addresses_remain_private(self):
+        for address in ("private@example.com", "other+zemixo.git@gmail.com",
+                        "zemixo.git@gmail.com.example.org"):
+            with self.subTest(address=address):
+                self.assertTrue(self.identity(address))
+                self.assertTrue(self.links(f"[Email](mailto:{address})"))
+        self.assertNotIn("private@example.com", self.output.getvalue())
+
+    def test_contact_link_cannot_add_another_recipient(self):
+        self.assertTrue(self.links(
+            "[Email](mailto:zemixo.git@gmail.com?cc=private@example.com)"
+        ))
+
     def test_new_markdown_recommendation_requires_review(self):
         self.assertTrue(self.links("[New](https://invalid.example/nonexistent)"))
 

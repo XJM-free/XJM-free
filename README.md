@@ -25,6 +25,8 @@ An interactive accident investigation. Find evidence, talk to characters, and ex
 
 Found a bug, have a question, or want to suggest something useful? Open an issue in the relevant repository.
 
+For a direct conversation: **[zemixo.git@gmail.com](mailto:zemixo.git@gmail.com)**
+
 ---
 
 <sub>Small tools. Made with care.</sub>
