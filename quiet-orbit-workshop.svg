@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="390" viewBox="0 0 1100 390" role="img" aria-labelledby="title desc">
-  <title id="title">Quiet Orbit pixel workshop</title>
+  <title id="title">Zemixo pixel workshop</title>
   <desc id="desc">Small tools. Made with care. A cream-colored pixel robot with amber eyes on a midnight blue background.</desc>
   <rect width="1100" height="390" fill="#091730"/>
   <g fill="none" stroke="#243551" stroke-width="1">
@@ -11,7 +11,7 @@
     <rect x="74" y="62" width="10" height="10" opacity=".5"/>
     <rect x="90" y="62" width="10" height="10" opacity=".22"/>
   </g>
-  <text x="118" y="73" fill="#c6cdd8" font-family="monospace" font-size="18" letter-spacing="3">QUIET ORBIT / WORKSHOP</text>
+  <text x="118" y="73" fill="#c6cdd8" font-family="monospace" font-size="18" letter-spacing="3">ZEMIXO / WORKSHOP</text>
   <g fill="#f4ecd6" font-family="monospace" font-size="61" font-weight="700" letter-spacing="-2">
     <text x="56" y="174">Small tools.</text>
     <text x="56" y="250">Made with care.</text>
