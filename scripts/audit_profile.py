@@ -22,6 +22,7 @@ SURFACES = (
     ("https://tinyweblab.com", "未完待续"),
 )
 PUBLIC_ALIAS = "Zemixo"
+PUBLIC_EMAIL = "zemixo.git@gmail.com"
 CONTACT = "https://github.com/zemixo/zemixo/issues"
 WITHHELD_SURFACES = (
     "https://github.com/zemixo/iOS-apps-portfolio",
@@ -106,6 +107,7 @@ def audit_profile_links(audit: Audit) -> None:
         normalized_url(url)
         for url in (
             CONTACT,
+            f"mailto:{PUBLIC_EMAIL}",
             *(url for url, _ in SURFACES),
             *(f"https://github.com/zemixo/{name}" for name in GITHUB_REPOS),
         )
@@ -136,10 +138,13 @@ def audit_profile_identity(audit: Audit) -> None:
         or "Independent developer." not in lines
     ):
         audit.fail("README must use the public alias and location-free introduction")
-    elif re.search(r"mailto:|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", profile):
-        audit.fail("README must not expose a personal email address")
+    elif any(
+        address != PUBLIC_EMAIL
+        for address in re.findall(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", profile)
+    ):
+        audit.fail("README must not expose an unapproved email address")
     else:
-        audit.pass_("README uses the public alias without a location or personal email")
+        audit.pass_("README uses the public alias and only the approved public contact")
 
 
 class PageTitle(HTMLParser):
